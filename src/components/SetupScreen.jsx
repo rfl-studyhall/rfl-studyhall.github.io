@@ -39,7 +39,7 @@ function SetupBtn({ selected, onClick, children, disabled = false, note = null, 
 // Setup-screen copy per language. Falls back to english until a language is picked.
 const STRINGS = {
   english: {
-    titleBar: 'S.00. STUDY HALL SETUP',
+    titleBar: 'Version 0.1 - Study Hall',
     welcome: ['WELCOME TO', 'STUDY HALL'],
     languageLabel: 'CHOOSE YOUR LANGUAGE',
     english: 'English',
@@ -59,7 +59,7 @@ const STRINGS = {
     start: 'Start Game',
   },
   spanish: {
-    titleBar: 'S.00. CONFIGURACIÓN DE STUDY HALL',
+    titleBar: 'Version 0.1 - Study Hall',
     welcome: ['BIENVENIDO A', 'STUDY HALL'],
     languageLabel: 'ELIGE TU IDIOMA',
     // Each language button names itself in its own language, so "English"
