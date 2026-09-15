@@ -20,7 +20,7 @@ import { EndingArt } from './EndingArt.jsx';
 import { ENDING_ALIGN, ENDING_CAPTIONS, endingFor } from '../endings.js';
 import { ShareSheet } from './ShareSheet.jsx';
 import { SupportSheet } from './SupportSheet.jsx';
-import { ALIGN_LABELS, FACILITATOR_FORM_URL } from '../scenarios.js';
+import { ALIGN_LABELS, CARDS_DOWNLOAD_URL, FACILITATOR_FORM_URL } from '../scenarios.js';
 
 export function CompleteScreen({
   gaugeAngle,
@@ -60,10 +60,13 @@ export function CompleteScreen({
               them: each is a card carrying its own picture. */}
           {!simulation && (
             <div className="study-offers">
-              <button type="button" className="study-offer">
+              {/* `download` rather than a plain link, so the file is saved
+                  rather than handed to whatever the browser does with the type
+                  -- the point of the card is to come away with the deck. */}
+              <a className="study-offer" href={CARDS_DOWNLOAD_URL} download>
                 <PixelCardsGuide className="study-offer-art" />
                 <span className="study-offer-label">Cards &amp; Guide</span>
-              </button>
+              </a>
               {/* A real anchor rather than window.open: a popup blocker can
                   swallow window.open silently, leaving the card looking dead. */}
               <a

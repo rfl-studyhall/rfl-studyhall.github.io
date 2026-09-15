@@ -7,6 +7,13 @@ import quadrantMap from '../quadrants.json';
 export const ALIGN_POINTS = quadrantMap.points;
 export const LETTERS = ['A', 'B', 'C', 'D', 'E'];
 
+// The printable deck and facilitator guide, zipped, served beside the game
+// itself. Relative on purpose: the same bundle is served from a user-site root
+// and from a project subpath, and an absolute path would only work on one of
+// them. The capitals are load-bearing -- macOS ignores filename case but the
+// Pages host does not, so this has to match the file exactly.
+export const CARDS_DOWNLOAD_URL = './StudyHall_offline.pdf.zip';
+
 export const FACILITATOR_FORM_URL =
   'https://docs.google.com/forms/d/e/1FAIpQLSct92R0RfomYZMXI32iA9jYQCbD-zJQLvWk_vL1rLkAg5bXEw/viewform?usp=header';
 export const SUPPORT_URL = null;
