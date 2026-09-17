@@ -1,5 +1,8 @@
 import { useState } from 'react';
 import { DEV_DECK } from '../scenarios.js';
+
+// The four Creative Commons badges, in the order the licence names them.
+const CC_ICONS = ['cc', 'by', 'nc', 'sa'];
 import { TitleBar } from './TitleBar.jsx';
 
 // `note` marks a choice that cannot be taken yet: the button is disabled and
@@ -196,6 +199,28 @@ export function SetupScreen({ onStart, initial, dev = false, studyUnlocked = fal
             >
               {t.start}
             </button>
+
+            {/* The licence notice in the form Creative Commons asks for: the
+                statement, a link to the deed, and the four badges. Left in
+                English in both languages -- it is the licence's own name. */}
+            <p className="setup-license">
+              This work is licensed under{' '}
+              <a
+                href="https://creativecommons.org/licenses/by-nc-sa/4.0/"
+                target="_blank"
+                rel="license noopener noreferrer"
+              >
+                CC BY-NC-SA 4.0
+              </a>
+              {CC_ICONS.map((icon) => (
+                <img
+                  key={icon}
+                  className="setup-license-icon"
+                  src={`https://mirrors.creativecommons.org/presskit/icons/${icon}.svg`}
+                  alt=""
+                />
+              ))}
+            </p>
           </div>
         </div>
       </div>

@@ -2765,6 +2765,34 @@
     text-align: center;
   }
 
+  /* Creative Commons notice at the foot of the menu. Small and muted: it has
+     to be present, not prominent. */
+  .setup-license {
+    margin: 18px 0 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    line-height: 1.7;
+    letter-spacing: 0.02em;
+    color: #9A9A9A;
+    text-align: center;
+  }
+
+  .setup-license a {
+    color: var(--green);
+    text-decoration: underline;
+  }
+
+  /* The presskit badges are black glyphs on transparent, so on this card's
+     near-black background they would be invisible. Inverted, they read as the
+     white marks the rest of the screen uses. */
+  .setup-license-icon {
+    max-width: 1em;
+    max-height: 1em;
+    margin-left: 0.2em;
+    vertical-align: -0.15em;
+    filter: invert(1);
+  }
+
   .setup-start-btn {
     display: block;
     width: 100%;
