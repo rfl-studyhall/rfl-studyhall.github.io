@@ -22,6 +22,7 @@ import {
   LETTERS,
   ADVISOR_PROFILES,
 } from './scenarios.js';
+import { SCENARIOS_ES, VISION_CARD_ES } from './scenarios.es.js';
 import { DEV_MODE } from './env.js';
 import { loadVision, saveVision } from './vision.js';
 import { loadSimulationCompleted, saveSimulationCompleted } from './progress.js';
@@ -129,7 +130,18 @@ export default function App() {
 
   // Dev Mode always plays its own four-card deck, whatever the setup screen
   // says; otherwise the card count picked there decides.
-  const deck = DEV_MODE ? DEV_DECK : settings ? SCENARIOS.slice(0, settings.cards) : SCENARIOS;
+  //
+  // The Spanish deck is a dev-only preview for now and plays all nineteen
+  // cards plus the vision card, in Spanish, whatever the dev deck would be.
+  const spanish = DEV_MODE && settings?.language === 'spanish';
+  const deck = spanish
+    ? SCENARIOS_ES
+    : DEV_MODE
+      ? DEV_DECK
+      : settings
+        ? SCENARIOS.slice(0, settings.cards)
+        : SCENARIOS;
+  const visionCard = spanish ? VISION_CARD_ES : VISION_CARD;
   const scenario = deck[Math.min(index, deck.length - 1)];
   const questionNumber = index + 1;
 
@@ -445,6 +457,7 @@ export default function App() {
         usedCalls={usedCalls}
         onUseCall={(i) => setUsedCalls((prev) => prev.map((u, j) => (j === i ? true : u)))}
         onAdvisorCall={(i, advisor) => handleAdvisorCall(i, advisor, VISION_CARD.code, null)}
+        card={visionCard}
         onFinish={finishVision}
       />
     );

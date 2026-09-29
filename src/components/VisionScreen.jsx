@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { VISION_CARD, VISION_CHAR_LIMIT } from '../scenarios.js';
+import { VISION_CARD as DEFAULT_VISION_CARD, VISION_CHAR_LIMIT } from '../scenarios.js';
 import { AdvisorCall } from './AdvisorCall.jsx';
 import { Gauge } from './Gauge.jsx';
 import { PixelStudyHamsters } from '../pixels.jsx';
@@ -34,6 +34,7 @@ function formatTime(s) {
 // answer in their own words. `initial` is whatever they wrote earlier this
 // session, so a Study Mode run opens on the vision the simulation ended with.
 export function VisionScreen({
+  card = DEFAULT_VISION_CARD,
   initial = '',
   timed = true,
   study = false,
@@ -83,7 +84,7 @@ export function VisionScreen({
 
   const advisors = (
     <AdvisorCall
-      advisors={VISION_CARD.advisors}
+      advisors={card.advisors}
       sound={sound}
       usedCalls={usedCalls}
       onUseCall={onUseCall}
@@ -113,14 +114,14 @@ export function VisionScreen({
         <div className="card card--intro card--standalone">
           <div className="body">
             <h1 className="pixel">
-              {VISION_CARD.titleLines[0]}
+              {card.titleLines[0]}
               <br />
-              {VISION_CARD.titleLines[1]}
+              {card.titleLines[1]}
             </h1>
             {isPhone && timed && clock}
             <div className="content-row">
               <div className="story-text-wrap">
-                {VISION_CARD.paragraphs.map((p, i) => (
+                {card.paragraphs.map((p, i) => (
                   <p key={i}>{p}</p>
                 ))}
               </div>

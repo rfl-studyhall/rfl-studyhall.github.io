@@ -98,7 +98,6 @@ const STRINGS = {
 export function SetupScreen({ onStart, initial, dev = false, studyUnlocked = false }) {
   // Ten cards is not dealt yet; twenty is the whole deck. Dev Mode plays its
   // own short deck instead.
-  const cardChoices = dev ? [DEV_DECK.length] : [10, 20];
   const lockedCards = dev ? [] : [10];
   const studyLocked = !dev && !studyUnlocked;
   const [language, setLanguage] = useState(initial?.language ?? null);
@@ -106,8 +105,19 @@ export function SetupScreen({ onStart, initial, dev = false, studyUnlocked = fal
   const [cards, setCards] = useState(initial?.cards ?? (dev ? DEV_DECK.length : null));
   // Sound defaults to on, so it never blocks Start Game
   const [sound, setSound] = useState(initial?.sound ?? true);
+
+  // The Spanish preview (Dev Mode only) plays the whole deck, so it offers 20
+  // where the English dev deck offers its four.
+  const cardChoices = dev ? [language === 'spanish' ? 20 : DEV_DECK.length] : [10, 20];
   const ready = language !== null && mode !== null && cards !== null;
   const t = STRINGS[language] ?? STRINGS.english;
+
+  // Dev Mode's card count depends on the language, so switching language
+  // re-picks the one count on offer rather than keeping a stale one.
+  function pickLanguage(next) {
+    setLanguage(next);
+    if (dev) setCards(next === 'spanish' ? 20 : DEV_DECK.length);
+  }
 
   return (
     <div className="setup-screen">
@@ -120,13 +130,19 @@ export function SetupScreen({ onStart, initial, dev = false, studyUnlocked = fal
             <div className="setup-question">
               <div className="setup-label">{t.languageLabel}</div>
               <div className="setup-choices setup-lang-choices">
-                <SetupBtn selected={language === 'english'} onClick={() => setLanguage('english')}>
+                <SetupBtn selected={language === 'english'} onClick={() => pickLanguage('english')}>
                   {t.english}
                 </SetupBtn>
                 <div className="setup-lang-col">
-                  {/* The translation is done but not wired through the game
-                      yet, so the choice is shown and held rather than hidden. */}
-                  <SetupBtn selected={false} disabled note={t.comingSoon}>
+                  {/* The translation is only wired through the game in Dev
+                      Mode so far, so elsewhere the choice is shown and held
+                      rather than hidden. */}
+                  <SetupBtn
+                    selected={language === 'spanish'}
+                    onClick={() => pickLanguage('spanish')}
+                    disabled={!dev}
+                    note={dev ? null : t.comingSoon}
+                  >
                     {t.spanish}
                   </SetupBtn>
                   <div className="setup-lang-caption">
