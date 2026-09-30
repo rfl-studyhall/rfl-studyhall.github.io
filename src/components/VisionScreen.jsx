@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useT } from '../i18n.js';
 import { VISION_CARD as DEFAULT_VISION_CARD, VISION_CHAR_LIMIT } from '../scenarios.js';
 import { AdvisorCall } from './AdvisorCall.jsx';
 import { Gauge } from './Gauge.jsx';
@@ -7,7 +8,8 @@ import { useTypewriter } from '../useTypewriter.js';
 import { useIsPhone } from '../useIsPhone.js';
 
 function TimesUpOverlay() {
-  const { visible, done } = useTypewriter('TIMES UP!', { speed: 90 });
+  const t = useT();
+  const { visible, done } = useTypewriter(t('TIMES UP!'), { speed: 90 });
   return (
     <div className="times-up-overlay">
       <div className={'times-up pixel' + (done ? ' times-up--flash' : '')}>
@@ -46,6 +48,7 @@ export function VisionScreen({
   onAdvisorCall,
   onFinish,
 }) {
+  const t = useT();
   const [text, setText] = useState(initial);
   const [timeLeft, setTimeLeft] = useState(CARD_TIME);
   const [outOfTime, setOutOfTime] = useState(false);
@@ -101,7 +104,7 @@ export function VisionScreen({
       disabled={outOfTime}
       onClick={() => onFinish(text)}
     >
-      Finish
+      {t('Finish')}
     </button>
   );
 
@@ -156,7 +159,7 @@ export function VisionScreen({
           <div className="body">
             <div className="vision-compose">
               <label className="vision-label" htmlFor="vision-input">
-                Your vision
+                {t('Your vision')}
               </label>
               <textarea
                 id="vision-input"
@@ -165,12 +168,12 @@ export function VisionScreen({
                 maxLength={VISION_CHAR_LIMIT}
                 rows={3}
                 disabled={outOfTime}
-                placeholder="In your own words..."
+                placeholder={t('In your own words...')}
                 onChange={(e) => setText(e.target.value)}
               />
               <div className="vision-meta">
                 {/* Nothing is required here -- an empty vision is a valid one. */}
-                <span className="vision-hint">Optional. Nothing here is scored.</span>
+                <span className="vision-hint">{t('Optional. Nothing here is scored.')}</span>
                 <span className={'vision-count' + (remaining <= 20 ? ' vision-count--low' : '')}>
                   {text.length}/{VISION_CHAR_LIMIT}
                 </span>
@@ -184,7 +187,7 @@ export function VisionScreen({
       {isPhone && (
         <div className="mobile-footer">
           <div className="mobile-footer-calls">
-            <span className="mobile-footer-label">Call Adviser</span>
+            <span className="mobile-footer-label">{t('Call Adviser')}</span>
             {advisors}
           </div>
           {finishButton}

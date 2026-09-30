@@ -4,6 +4,8 @@ import cloud from 'd3-cloud';
 import { fetchWordCloud, fetchQuadrantAverages } from '../aggregates.js';
 import quadrantMap from '../../quadrants.json';
 import { SCENARIOS, ALIGN_LABELS, ALIGN_POINTS } from '../scenarios.js';
+import { SCENARIOS_ES } from '../scenarios.es.js';
+import { useT, useTDeep, useIsSpanish } from '../i18n.js';
 import { MiniHamster, ThoughtBubble, WheelHamster } from '../pixels.jsx';
 import { DEV_MODE } from '../env.js';
 import { DEV_STUB_ANSWERS, DEV_STUB_AVERAGES } from '../devStub.js';
@@ -181,6 +183,7 @@ const MONO = "'JetBrains Mono', monospace";
 
 
 function WordCloud({ words, scope }) {
+  const t = useT();
   const ref = useRef(null);
   const wrapRef = useRef(null);
   // Which word the cursor is over, and where to put the readout. Kept in state
@@ -196,7 +199,7 @@ function WordCloud({ words, scope }) {
     // draw happens in its 'end' callback rather than inline.
     const layout = cloud()
       .size([CLOUD_W, CLOUD_H])
-      .words(words.map((w) => ({ ...w })))
+      .words(words.map((w) => ({ ...w, text: t(w.text) })))
       .padding(2)
       .rotate((_, i) => (i % 3 === 0 ? 90 : 0))
       .font(MONO)
@@ -238,7 +241,7 @@ function WordCloud({ words, scope }) {
       svg.selectAll('*').remove();
       setHover(null);
     };
-  }, [words]);
+  }, [words, t]);
 
   return (
     <div className="cloud-wrap" ref={wrapRef} onMouseLeave={() => setHover(null)}>
@@ -247,7 +250,7 @@ function WordCloud({ words, scope }) {
         className="results-chart-svg"
         viewBox={`0 0 ${CLOUD_W} ${CLOUD_H}`}
         role="img"
-        aria-label={`Word cloud of what players picked, for ${scope}`}
+        aria-label={t('wordCloudLabel', { scope: t(scope) })}
       />
       {hover && (
         <div
@@ -312,8 +315,10 @@ function alignFor(answers, n) {
 
 const scenarioByCode = Object.fromEntries(SCENARIOS.map((sc) => [sc.code, sc]));
 
-function scenarioFor(n) {
-  return scenarioByCode[`S.${String(n).padStart(2, '0')}`] ?? null;
+const scenarioByCodeEs = Object.fromEntries(SCENARIOS_ES.map((sc) => [sc.code, sc]));
+
+function scenarioFor(n, spanish = false) {
+  return (spanish ? scenarioByCodeEs : scenarioByCode)[`S.${String(n).padStart(2, '0')}`] ?? null;
 }
 
 // What one scenario chip opens, in reading order: what they answered, why the
@@ -323,14 +328,15 @@ function scenarioFor(n) {
 // the suggestion block rather than sitting under it, so the card stays one
 // screenful.
 function ScenarioDetail({ n, answers }) {
-  const scenario = scenarioFor(n);
+  const t = useT();
+  const scenario = scenarioFor(n, useIsSpanish());
   if (!scenario) {
     return (
       <div className="scenario-detail">
         <div className="scenario-detail-head">
-          <h4 className="scenario-detail-title">Scenario {n}</h4>
+          <h4 className="scenario-detail-title">{t('scenarioN', { n })}</h4>
         </div>
-        <p className="scenario-detail-note">This card has not been written yet.</p>
+        <p className="scenario-detail-note">{t('This card has not been written yet.')}</p>
       </div>
     );
   }
@@ -346,7 +352,7 @@ function ScenarioDetail({ n, answers }) {
     <div className="scenario-detail">
       <div className="scenario-detail-head">
         <h4 className="scenario-detail-title">
-          Scenario {n}: {scenario.titleLines.join(' ')}
+          {t('scenarioTitle', { n, title: scenario.titleLines.join(' ') })}
         </h4>
         {/* Signed only when there is something to sign -- "+0" reads oddly. */}
         <span className="chip" data-align={picked ? picked.align : 'unanswered'}>
@@ -354,19 +360,19 @@ function ScenarioDetail({ n, answers }) {
         </span>
       </div>
 
-      <h5 className="scenario-detail-label">Your answer</h5>
+      <h5 className="scenario-detail-label">{t('Your answer')}</h5>
       {picked ? (
         <p className="scenario-detail-answer" data-align={picked.align}>
           {/* Nothing was picked when the clock ran out, so there is no option
               to quote -- only what it was scored as. */}
-          {picked.timedOut ? 'You ran out of time without choosing.' : picked.text}
-          <span className="scenario-detail-align">{ALIGN_LABELS[picked.align]}</span>
+          {picked.timedOut ? t('You ran out of time without choosing.') : picked.text}
+          <span className="scenario-detail-align">{t(ALIGN_LABELS[picked.align])}</span>
         </p>
       ) : (
-        <p className="scenario-detail-note">You did not play this scenario.</p>
+        <p className="scenario-detail-note">{t('You did not play this scenario.')}</p>
       )}
 
-      <h5 className="scenario-detail-label">Why</h5>
+      <h5 className="scenario-detail-label">{t('Why')}</h5>
       {aligned.map((o) => (
         <p key={o.text} className="scenario-detail-why">
           {o.explanation}
@@ -376,7 +382,7 @@ function ScenarioDetail({ n, answers }) {
       {/* Only worth showing when it is not the one they already picked. */}
       {!pickedWasAligned && aligned.length > 0 && (
         <>
-          <h5 className="scenario-detail-label">Fully aligned answer</h5>
+          <h5 className="scenario-detail-label">{t('Fully aligned answer')}</h5>
           {aligned.map((o) => (
             <p key={o.text} className="scenario-detail-answer" data-align="full">
               {o.text}
@@ -387,12 +393,12 @@ function ScenarioDetail({ n, answers }) {
 
       {scenario.principle && (
         <>
-          <h5 className="scenario-detail-label">EJIT principle</h5>
+          <h5 className="scenario-detail-label">{t('EJIT principle')}</h5>
           <p className="scenario-detail-principle">{scenario.principle}</p>
         </>
       )}
 
-      <h5 className="scenario-detail-label">The scenario</h5>
+      <h5 className="scenario-detail-label">{t('The scenario')}</h5>
       {scenario.paragraphs.map((para) => (
         <p key={para.slice(0, 40)} className="scenario-detail-prompt">
           {para}
@@ -444,9 +450,10 @@ const BAND_NAMES = [
 ];
 
 function SuggestionBands({ axis }) {
+  const t = useT();
   return (
     <div className="suggestion-bands">
-      <h4 className="radar-detail-suggest">Suggestions for Taking Action</h4>
+      <h4 className="radar-detail-suggest">{t('Suggestions for Taking Action')}</h4>
       {/* The three bands read across rather than down: they are one ladder, and
           side by side the ranges can be compared at a glance. */}
       <div className="suggestion-band-row">
@@ -465,7 +472,7 @@ function SuggestionBands({ axis }) {
                 className="suggestion-band-range chip"
                 data-align={BAND_NAMES[i].align}
               >
-                {BAND_NAMES[i].name} {signed(from)} to {signed(band.max)}
+                {t('scoreRange', { name: t(BAND_NAMES[i].name), from: signed(from), to: signed(band.max) })}
               </span>
               <p className="suggestion-band-text">{band.text}</p>
             </div>
@@ -484,6 +491,8 @@ function RadarChart({ answers: realAnswers, study = false }) {
   // A dev build with nothing played falls back to stub answers, so the chart,
   // the chips and the per-scenario detail can all be looked at without playing
   // nineteen cards first. Never in a production build.
+  const t = useT();
+  const T = useTDeep();
   const answers =
     DEV_MODE && !Object.keys(realAnswers ?? {}).length ? DEV_STUB_ANSWERS : realAnswers;
 
@@ -527,10 +536,16 @@ function RadarChart({ answers: realAnswers, study = false }) {
     () =>
       RADAR_AXES.map((axis) => ({
         ...axis,
+        title: T(axis.title),
+        suggestions: axis.suggestions.map((band) => ({
+          ...band,
+          label: t(band.label),
+          text: t(band.text),
+        })),
         you: axisScore(axis, answers),
         avg: averages?.[axis.slug]?.avg ?? null,
       })),
-    [answers, averages]
+    [answers, averages, t]
   );
 
   // Drawn series: the average one only once its data is in, and in Study Mode
@@ -540,8 +555,8 @@ function RadarChart({ answers: realAnswers, study = false }) {
     () =>
       RADAR_SERIES.filter(
         (s) => (s.key !== 'avg' || averages) && (s.key !== 'you' || !study)
-      ),
-    [averages, study]
+      ).map((s) => ({ ...s, name: t(s.name) })),
+    [averages, study, t]
   );
 
   useEffect(() => {
@@ -749,10 +764,10 @@ function RadarChart({ answers: realAnswers, study = false }) {
       // chart lists every band rather than the one a score fell in. The average
       // is absent until Modal answers, so the block can be a line shorter still.
       const chips = [
-        ...(study ? [] : [{ key: 'you', label: 'YOU', text: `${d.you}/${d.max}` }]),
+        ...(study ? [] : [{ key: 'you', label: t('YOU'), text: `${d.you}/${d.max}` }]),
         ...(d.avg === null || d.avg === undefined
           ? []
-          : [{ key: 'avg', label: 'AVG', text: `${d.avg}/${d.max}` }]),
+          : [{ key: 'avg', label: t('AVG'), text: `${d.avg}/${d.max}` }]),
       ];
 
       // How much room the stack needs below the last line of the title.
@@ -841,7 +856,7 @@ function RadarChart({ answers: realAnswers, study = false }) {
       svg.selectAll('*').remove();
       marks.current = { aura: null, sel: null, dot: null, labels: null, avgDot: null, avgTip: null };
     };
-  }, [axes, series, study]);
+  }, [axes, series, study, t]);
 
   // The average readout: positioned and filled here rather than in the draw
   // effect, so hovering never redraws the chart out from under the pointer.
@@ -860,7 +875,7 @@ function RadarChart({ answers: realAnswers, study = false }) {
     const x = radius * Math.sin(angle);
     const y = -radius * Math.cos(angle);
 
-    const text = tip.select('.radar-avg-tip-text').text(`Everyone: ${axis.avg}/${axis.max}`);
+    const text = tip.select('.radar-avg-tip-text').text(t('everyone', { avg: axis.avg, max: axis.max }));
     const box = text.node().getBBox();
     const padX = 7;
     const padY = 4;
@@ -912,7 +927,7 @@ function RadarChart({ answers: realAnswers, study = false }) {
             className="results-chart-svg"
             viewBox={`0 0 ${RADAR_W} ${RADAR_H}`}
             role="img"
-            aria-label="Spider chart of scores by theme (placeholder data)"
+            aria-label={t('Spider chart of scores by theme')}
           />
         {/* Lists only what was drawn -- the comparison series is absent until
             its data arrives. */}
@@ -940,7 +955,7 @@ function RadarChart({ answers: realAnswers, study = false }) {
           <>
         {/* The score lives on the chart now, under its own quadrant's name. */}
         <h4 className="radar-detail-suggest">
-          Suggestions for Taking Action
+          {t('Suggestions for Taking Action')}
           <span className="radar-detail-range">{suggestion.label}</span>
         </h4>
         <p className="radar-detail-text">{suggestion.text}</p>
@@ -949,8 +964,8 @@ function RadarChart({ answers: realAnswers, study = false }) {
             of tabs. Clicking one opens it below; clicking it again closes it,
             so there is no separate dismiss control. */}
         <div className="radar-tabs">
-          <span className="radar-tabs-label">Scenarios</span>
-          <div className="radar-tabs-list" role="tablist" aria-label="Scenarios in this quadrant">
+          <span className="radar-tabs-label">{t('Scenarios')}</span>
+          <div className="radar-tabs-list" role="tablist" aria-label={t('Scenarios in this quadrant')}>
             {axis.scenarios.map((n) => (
               <button
                 key={n}
@@ -959,7 +974,7 @@ function RadarChart({ answers: realAnswers, study = false }) {
                 className="radar-chip"
                 data-align={alignFor(answers, n)}
                 aria-selected={openScenario === n}
-                aria-label={`Scenario ${n}`}
+                aria-label={t('scenarioN', { n })}
                 onClick={() => setOpenScenario(openScenario === n ? null : n)}
               >
                 {n}
@@ -992,6 +1007,7 @@ export function ScoreBreakdown({ answers, study = false }) {
 // can sit inside the radar's frame without the breakdown having to know
 // anything about where its words come from.
 function WordCloudPanel() {
+  const t = useT();
   // Which slice of the cloud is on show: the aggregate, or one country.
   const [cloudScope, setCloudScope] = useState(CLOUD_ALL);
   // Real tallies out of PostHog. `loading` is tracked apart from "no data" so
@@ -1027,18 +1043,18 @@ function WordCloudPanel() {
     <div className="radar-cloud">
       <div className="results-chart-head">
         <h2 className="results-chart-title">
-          What others think about environmental justice in technology
+          {t('What others think about environmental justice in technology')}
         </h2>
         {/* Nothing to filter until there are country slices to pick. */}
         {countries.length > 0 && (
           <label className="cloud-scope">
-            <span className="sr-only">Filter word cloud by country</span>
+            <span className="sr-only">{t('Filter word cloud by country')}</span>
             <select
               className="cloud-scope-select"
               value={cloudScope}
               onChange={(e) => setCloudScope(e.target.value)}
             >
-              <option value={CLOUD_ALL}>All</option>
+              <option value={CLOUD_ALL}>{t('All')}</option>
               {countries.map((country) => (
                 <option key={country} value={country}>
                   {country}
@@ -1054,9 +1070,9 @@ function WordCloudPanel() {
         // Still fetching, or there are no counts yet. Saying so beats showing
         // words nobody picked. Blank while loading, so the message does not
         // appear and then vanish.
-        <p className="word-cloud-empty">{loading ? '' : 'Not enough data'}</p>
+        <p className="word-cloud-empty">{loading ? '' : t('Not enough data')}</p>
       )}
-      {live && <p className="results-chart-note">What players picked on the goals screen.</p>}
+      {live && <p className="results-chart-note">{t('What players picked on the goals screen.')}</p>}
     </div>
   );
 }

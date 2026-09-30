@@ -1,4 +1,5 @@
 import { ALIGN_LABELS } from './scenarios.js';
+import i18n from './i18n.js';
 import { ENDING_ALIGN, ENDING_CAPTIONS } from './endings.js';
 
 export const GAME_NAME = 'STUDY HALL';
@@ -28,7 +29,7 @@ const DIAL_BAR = {
 };
 
 export function shareLabelFor(ending) {
-  return ALIGN_LABELS[ENDING_ALIGN[ending]];
+  return i18n.t(ALIGN_LABELS[ENDING_ALIGN[ending]]);
 }
 
 // The link others follow. Strips any query or hash so a shared link never
@@ -42,16 +43,16 @@ export function shareUrl() {
 // survive an SMS without being cut in half.
 export function buildShareText({ ending, score, max, url }) {
   return [
-    `${GAME_NAME} · ${GAME_SUBTITLE}`,
+    `${GAME_NAME} · ${i18n.t(GAME_SUBTITLE)}`,
     `${ENDING_EMOJI[ending]} ${shareLabelFor(ending)} — ${score}/${max}`,
     DIAL_BAR[ending],
-    ENDING_CAPTIONS[ending],
-    `Play: ${url}`,
+    i18n.t(ENDING_CAPTIONS[ending]),
+    i18n.t('playLink', { url }),
   ].join('\n');
 }
 
 export function buildEmailSubject(ending) {
-  return `${GAME_NAME} — I got ${shareLabelFor(ending).toLowerCase()}`;
+  return i18n.t('shareSubject', { game: GAME_NAME, label: shareLabelFor(ending).toLowerCase() });
 }
 
 export { ENDING_EMOJI, DIAL_BAR };

@@ -1,4 +1,5 @@
 import { TitleBar } from './TitleBar.jsx';
+import { useT } from '../i18n.js';
 
 // The vocabulary offered for the opening question. Order is deliberate --
 // it is the order they are shown in.
@@ -49,6 +50,7 @@ export function ReflectionScreen({
   onStart,
   onReview,
 }) {
+  const t = useT();
   const selected = answer ?? [];
 
   function toggle(word) {
@@ -63,17 +65,17 @@ export function ReflectionScreen({
           jump on the step in from Consent -- badly needed in Study Mode,
           where the copy here is down to two short lines. */}
       <div className="setup-card setup-card--info">
-        <TitleBar label={label} />
+        <TitleBar label={t(label)} />
         <div className="setup-body">
           <div className="setup-inner reflect">
             {!study && (
               <>
                 <p className="reflect-line">
-                  But before we start...what is Environmental Justice in Technology for you?
+                  {t('But before we start...what is Environmental Justice in Technology for you?')}
                 </p>
-                <p className="reflect-line reflect-hint">Pick as many words as you like.</p>
+                <p className="reflect-line reflect-hint">{t('Pick as many words as you like.')}</p>
 
-                <div className="reflect-words" role="group" aria-label="Words you would choose">
+                <div className="reflect-words" role="group" aria-label={t('Words you would choose')}>
                   {REFLECT_WORDS.map((word) => {
                     const on = selected.includes(word);
                     return (
@@ -84,7 +86,7 @@ export function ReflectionScreen({
                         aria-pressed={on}
                         onClick={() => toggle(word)}
                       >
-                        {word}
+                        {t(word)}
                       </button>
                     );
                   })}
@@ -100,20 +102,20 @@ export function ReflectionScreen({
                   }
                   aria-live="polite"
                 >
-                  {selected.length} word{selected.length === 1 ? '' : 's'} selected.
+                  {t('wordsSelected', { count: selected.length })}
                 </p>
               </>
             )}
 
-            <p className="reflect-line">Let&rsquo;s start?</p>
+            <p className="reflect-line">{t('Let’s start?')}</p>
 
             <div className="reflect-choices">
               <button type="button" className="reflect-choice" onClick={onStart}>
-                <span className="reflect-caret">&rsaquo;</span>YES!
+                <span className="reflect-caret">&rsaquo;</span>{t('YES!')}
               </button>
               <button type="button" className="reflect-choice" onClick={onReview}>
                 <span className="reflect-caret">&rsaquo;</span>
-                NO. I want to review the rules and goals again.
+                {t('NO. I want to review the rules and goals again.')}
               </button>
             </div>
           </div>

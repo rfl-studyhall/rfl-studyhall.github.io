@@ -1,4 +1,5 @@
 import { Fragment, useEffect, useRef, useState } from 'react';
+import { useT } from '../i18n.js';
 import {
   captureClarityRated,
   captureLearnBeyondOpened,
@@ -14,7 +15,8 @@ import { useTypewriter } from '../useTypewriter.js';
 import { useIsPhone } from '../useIsPhone.js';
 
 function TimesUpOverlay() {
-  const { visible, done } = useTypewriter('TIMES UP!', { speed: 90 });
+  const t = useT();
+  const { visible, done } = useTypewriter(t('TIMES UP!'), { speed: 90 });
   return (
     <div className="times-up-overlay">
       <div className={'times-up pixel' + (done ? ' times-up--flash' : '')}>
@@ -56,6 +58,7 @@ export function OptionsScreen({
   onTimeoutPenalty,
   onNext,
 }) {
+  const t = useT();
   const [selected, setSelected] = useState(null);
   const [clarity, setClarity] = useState(0); // 1 = confusing, 2 = unsure, 3 = clear
   const [feedback, setFeedback] = useState('');
@@ -190,7 +193,7 @@ export function OptionsScreen({
   function learnMoreControl(className, tabIndex) {
     return (
       <button type="button" className={className} onClick={openLearnBeyond} tabIndex={tabIndex}>
-        Learn More
+        {t('Learn More')}
       </button>
     );
   }
@@ -258,32 +261,32 @@ export function OptionsScreen({
     {
       value: 1,
       face: '\u{1F616}',
-      label: CLARITY_SCALE[1],
-      prompt: 'What was confusing? Tell us more',
+      label: t(CLARITY_SCALE[1]),
+      prompt: t('What was confusing? Tell us more'),
     },
     {
       value: 2,
       face: '\u{1F615}',
-      label: CLARITY_SCALE[2],
-      prompt: 'What was confusing? Tell us more',
+      label: t(CLARITY_SCALE[2]),
+      prompt: t('What was confusing? Tell us more'),
     },
     {
       value: 3,
       face: '\u{1F610}',
-      label: CLARITY_SCALE[3],
-      prompt: 'What would make it clearer?',
+      label: t(CLARITY_SCALE[3]),
+      prompt: t('What would make it clearer?'),
     },
     {
       value: 4,
       face: '\u{1F642}',
-      label: CLARITY_SCALE[4],
-      prompt: "Anything else you'd like to share?",
+      label: t(CLARITY_SCALE[4]),
+      prompt: t("Anything else you'd like to share?"),
     },
     {
       value: 5,
       face: '\u{1F604}',
-      label: CLARITY_SCALE[5],
-      prompt: "Anything else you'd like to share?",
+      label: t(CLARITY_SCALE[5]),
+      prompt: t("Anything else you'd like to share?"),
     },
   ];
 
@@ -306,7 +309,7 @@ export function OptionsScreen({
           there is nothing left to press. */}
       {feedbackSent ? (
         <span className="study-feedback-sent" role="status">
-          <span aria-hidden="true">&#10003;</span> Sent
+          <span aria-hidden="true">&#10003;</span> {t('Sent')}
         </span>
       ) : (
         <button
@@ -315,7 +318,7 @@ export function OptionsScreen({
           disabled={!feedback.trim()}
           onClick={handleFeedbackSubmit}
         >
-          Send
+          {t('Send')}
         </button>
       )}
     </div>
@@ -323,7 +326,7 @@ export function OptionsScreen({
 
   const clarityBlock = (
     <div className="clarity-rating">
-      <label htmlFor="clarity-faces">How clear is this scenario to you?</label>
+      <label htmlFor="clarity-faces">{t('How clear is this scenario to you?')}</label>
       <div className="study-faces" id="clarity-faces">
         {CLARITY_FACES.map(({ value, face, label }) => (
           <button
@@ -356,7 +359,7 @@ export function OptionsScreen({
     study && revealed && scenario.principle ? (
       <div className="principle">
         <div className="principle-inner">
-          <span className="principle-label">EJIT Principle</span>
+          <span className="principle-label">{t('EJIT Principle')}</span>
           <p className="principle-text">{scenario.principle}</p>
           {clarityBlock}
           {actionsBlock}
@@ -447,7 +450,7 @@ export function OptionsScreen({
                 <div className={'study-slot' + (revealed ? ' is-revealed' : '')}>
                   <PixelStudyHamsters className="study-hamsters" />
                   <div className="study-board" aria-hidden={!revealed}>
-                    <span className="principle-label">EJIT Principle</span>
+                    <span className="principle-label">{t('EJIT Principle')}</span>
                     <p className="study-board-text">
                       {typed.visible}
                       {revealed && !typed.done && <span className="type-caret" />}
@@ -482,9 +485,9 @@ export function OptionsScreen({
                    same screen, same component, same DOM node. */
                 <div className="deal-slot">
                   <button type="button" className="deal-btn" onClick={onArm}>
-                    Answer Question
+                    {t('Answer Question')}
                   </button>
-                  <p className="deal-hint">The clock starts when you do</p>
+                  <p className="deal-hint">{t('The clock starts when you do')}</p>
                 </div>
               ) : (
               <div className={isPhone ? 'options-row options-deck' : 'options-row'}>
@@ -534,11 +537,11 @@ export function OptionsScreen({
                         <div className="option-tags">
                           {simulationAnswers[scenario.code] === opt && (
                             <div className="chip" data-align="simulation">
-                              Selected in simulation mode
+                              {t('Selected in simulation mode')}
                             </div>
                           )}
                           <div className="chip" data-align={opt.align}>
-                            {ALIGN_LABELS[opt.align]}{' '}
+                            {t(ALIGN_LABELS[opt.align])}{' '}
                             <b className="chip-score">
                               {opt.score > 0 ? `+${opt.score}` : opt.score}
                             </b>
@@ -554,7 +557,7 @@ export function OptionsScreen({
                         aria-pressed={selected === i}
                         onClick={() => setSelected(i)}
                       >
-                        {selected === i ? `Selected ${LETTERS[i]}` : 'Select'}
+                        {selected === i ? t('selectedLetter', { letter: LETTERS[i] }) : t('Select')}
                       </button>
                     )}
                   </div>
@@ -566,11 +569,11 @@ export function OptionsScreen({
             {noAnswer && (
               <>
                 <p className="timeout-note">
-                  When you don&rsquo;t decide, someone will decide for you.
+                  {t('When you don’t decide, someone will decide for you.')}
                 </p>
                 {isPhone && (
                   <button type="button" className="action-btn timeout-next" onClick={handleAction}>
-                    {isLast ? 'Finish' : 'Next Question'}
+                    {isLast ? t('Finish') : t('Next Question')}
                   </button>
                 )}
               </>
@@ -582,7 +585,7 @@ export function OptionsScreen({
                 disabled={revealStep === 2 ? false : selected === null || outOfTime || revealing}
                 onClick={handleAction}
               >
-                {(study ? revealed : revealStep === 2) ? (isLast ? 'Finish' : 'Next Question') : 'Submit'}
+                {(study ? revealed : revealStep === 2) ? (isLast ? t('Finish') : t('Next Question')) : t('Submit')}
               </button>
             )}
           </div>
@@ -591,7 +594,7 @@ export function OptionsScreen({
       {isPhone && armed && !noAnswer && (
         <div className="mobile-footer">
           <div className="mobile-footer-calls">
-            <span className="mobile-footer-label">Call Adviser</span>
+            <span className="mobile-footer-label">{t('Call Adviser')}</span>
             <AdvisorCall
               advisors={scenario.advisors}
               sound={sound}
@@ -610,11 +613,11 @@ export function OptionsScreen({
           >
             {(study ? revealed : revealStep === 2)
               ? isLast
-                ? 'Finish'
-                : 'Next Question'
+                ? t('Finish')
+                : t('Next Question')
               : selected !== null
-              ? `Submit ${LETTERS[selected]}`
-              : 'Submit'}
+              ? t('submitLetter', { letter: LETTERS[selected] })
+              : t('Submit')}
           </button>
         </div>
       )}
@@ -622,12 +625,12 @@ export function OptionsScreen({
         <div className="learn-beyond-overlay" onClick={() => setLearnBeyondOpen(false)}>
           <div className="learn-beyond-panel" onClick={(e) => e.stopPropagation()}>
             <div className="learn-beyond-header">
-              <h2>Learn More</h2>
+              <h2>{t('Learn More')}</h2>
               <button
                 type="button"
                 className="learn-beyond-close"
                 onClick={() => setLearnBeyondOpen(false)}
-                aria-label="Close"
+                aria-label={t('Close')}
               >
                 ✕
               </button>
@@ -635,13 +638,13 @@ export function OptionsScreen({
             <div className="learn-beyond-content">
               {learnResources.length === 0 ? (
                 <p className="learn-empty">
-                  Reading for this scenario is still being gathered.
+                  {t('Reading for this scenario is still being gathered.')}
                 </p>
               ) : (
                 <ul className="learn-list">{learnResources.map(learnItem)}</ul>
               )}
 
-              <h3 className="learn-section-head">General resources about EJIT</h3>
+              <h3 className="learn-section-head">{t('General resources about EJIT')}</h3>
               <ul className="learn-list">{GENERAL_RESOURCES.map(learnItem)}</ul>
             </div>
           </div>

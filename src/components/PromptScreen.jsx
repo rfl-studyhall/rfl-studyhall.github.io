@@ -1,4 +1,5 @@
 import { Fragment } from 'react';
+import { useT } from '../i18n.js';
 import { TitleBar } from './TitleBar.jsx';
 // Typewriter reveal is parked -- see below.
 // import { useTypewriter } from '../useTypewriter.js';
@@ -6,6 +7,7 @@ import { TitleBar } from './TitleBar.jsx';
 const PARA_BREAK = '\n\n';
 
 export function PromptScreen({ scenario, index, total, onSelectAnswer }) {
+  const t = useT();
   const fullText = scenario.paragraphs.join(PARA_BREAK);
   // The story used to type itself out one character at a time. Parked for
   // now: restore the two commented lines (and the import above) to bring it
@@ -41,7 +43,7 @@ export function PromptScreen({ scenario, index, total, onSelectAnswer }) {
               </div>
               {done && (
                 <button type="button" className="select-answer-btn" onClick={onSelectAnswer}>
-                  Select Answer
+                  {t('Select Answer')}
                 </button>
               )}
             </div>
@@ -58,7 +60,7 @@ export function PromptScreen({ scenario, index, total, onSelectAnswer }) {
               <span key={i} className={i <= index ? 'filled' : ''} />
             ))}
           </div>
-          <div className="caption">STUDY HALL BY ROOTED FUTURES LAB</div>
+          <div className="caption">{t('STUDY HALL BY ROOTED FUTURES LAB')}</div>
         </div>
       </div>
     </div>

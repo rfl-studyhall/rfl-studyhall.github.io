@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useT } from '../i18n.js';
 import {
   captureResultsShared,
   captureSharePreviewOpened,
@@ -35,8 +36,9 @@ export function CompleteScreen({
 }) {
   // Which of the four endings the needle earned. One derivation, shared with
   // the share preview so the two can never disagree.
+  const t = useT();
   const ending = endingFor(gaugeAngle);
-  const band = { align: ENDING_ALIGN[ending], label: ALIGN_LABELS[ENDING_ALIGN[ending]] };
+  const band = { align: ENDING_ALIGN[ending], label: t(ALIGN_LABELS[ENDING_ALIGN[ending]]) };
   // Real play only ever sums integers; the debug band jump parks the needle on
   // a fraction, so round before it is shown or shared.
   const shownScore = Math.round(totalScore);
@@ -55,7 +57,7 @@ export function CompleteScreen({
     <div className={'screen-complete' + (simulation ? ' screen-complete--sim' : '')}>
       <div className="card card--options card--standalone results-card">
         <div className="body">
-          <h1 className="pixel">STUDY HALL COMPLETE</h1>
+          <h1 className="pixel">{t('STUDY HALL COMPLETE')}</h1>
           {/* What Study Mode leads to, above the endings rather than under
               them: each is a card carrying its own picture. */}
           {!simulation && (
@@ -65,7 +67,7 @@ export function CompleteScreen({
                   -- the point of the card is to come away with the deck. */}
               <a className="study-offer" href={CARDS_DOWNLOAD_URL} download>
                 <PixelCardsGuide className="study-offer-art" />
-                <span className="study-offer-label">Cards &amp; Guide</span>
+                <span className="study-offer-label">{t('Cards & Guide')}</span>
               </a>
               {/* A real anchor rather than window.open: a popup blocker can
                   swallow window.open silently, leaving the card looking dead. */}
@@ -76,7 +78,7 @@ export function CompleteScreen({
                 rel="noopener noreferrer"
               >
                 <PixelClassroom className="study-offer-art" />
-                <span className="study-offer-label">Become a Facilitator</span>
+                <span className="study-offer-label">{t('Become a Facilitator')}</span>
               </a>
             </div>
           )}
@@ -100,7 +102,7 @@ export function CompleteScreen({
                       <b className="chip-score">{shownScore}</b>
                     </div>
                   </div>
-                  <div className="rat-caption">{ENDING_CAPTIONS[ending]}</div>
+                  <div className="rat-caption">{t(ENDING_CAPTIONS[ending])}</div>
                 </>
               ) : (
                 <div className="ending-strip">
@@ -110,7 +112,7 @@ export function CompleteScreen({
                         <WheelHamster />
                       </div>
                     </div>
-                    <figcaption>You are trapped in the capitalism rat race</figcaption>
+                    <figcaption>{t('You are trapped in the capitalism rat race')}</figcaption>
                   </figure>
                   <figure className="ending-strip-item">
                     <div className="ending-strip-art">
@@ -119,7 +121,7 @@ export function CompleteScreen({
                         <SodaCup className="drink-cup" />
                       </div>
                     </div>
-                    <figcaption>Looks like you are drinking the cool aide</figcaption>
+                    <figcaption>{t('Looks like you are drinking the cool aide')}</figcaption>
                   </figure>
                   <figure className="ending-strip-item">
                     <div className="ending-strip-art">
@@ -133,7 +135,7 @@ export function CompleteScreen({
                         </div>
                       </div>
                     </div>
-                    <figcaption>You&apos;re starting to come out of it. Keep going</figcaption>
+                    <figcaption>{t("You're starting to come out of it. Keep going")}</figcaption>
                   </figure>
                   <figure className="ending-strip-item">
                     <div className="ending-strip-art">
@@ -144,8 +146,7 @@ export function CompleteScreen({
                       </div>
                     </div>
                     <figcaption>
-                      Your freedom is a direct result of just and inclusive relationships with
-                      others
+                      {t('Your freedom is a direct result of just and inclusive relationships with others')}
                     </figcaption>
                   </figure>
                 </div>
@@ -156,7 +157,7 @@ export function CompleteScreen({
               {simulation && (
                 <div className="scene-actions">
                   <button type="button" className="btn" onClick={openShare}>
-                    Share
+                    {t('Share')}
                   </button>
                 </div>
               )}
@@ -175,12 +176,12 @@ export function CompleteScreen({
                 Study Mode has its own end actions, so it only shows here. */}
             {simulation && (
               <aside className="facilitator-panel">
-                <p className="facilitator-lead">Interested in becoming a facilitator?</p>
+                <p className="facilitator-lead">{t('Interested in becoming a facilitator?')}</p>
                 <p className="facilitator-step">
-                  <span>First step:</span> complete the game in Study Mode.
+                  <span>{t('First step:')}</span> {t('complete the game in Study Mode.')}
                 </p>
                 <button type="button" className="btn facilitator-cta" onClick={onStartStudy}>
-                  Start Study Mode
+                  {t('Start Study Mode')}
                 </button>
               </aside>
             )}
@@ -192,7 +193,7 @@ export function CompleteScreen({
               nothing was written -- the card is optional. */}
           {vision?.trim() && (
             <section className="vision-recap">
-              <h2 className="vision-recap-title">Your vision for the future</h2>
+              <h2 className="vision-recap-title">{t('Your vision for the future')}</h2>
               <blockquote className="vision-recap-text">{vision}</blockquote>
             </section>
           )}
@@ -226,11 +227,11 @@ export function CompleteScreen({
           <div className="corner-actions">
             <button type="button" className="corner-btn" onClick={onRestart}>
               <PixelReload className="corner-btn-icon" />
-              <span>Play Again</span>
+              <span>{t('Play Again')}</span>
             </button>
             <button type="button" className="corner-btn" onClick={() => setSupportOpen(true)}>
               <PixelMoney className="corner-btn-icon" />
-              <span>Support</span>
+              <span>{t('Support')}</span>
             </button>
           </div>
 

@@ -23,6 +23,7 @@ import {
   ADVISOR_PROFILES,
 } from './scenarios.js';
 import { SCENARIOS_ES, VISION_CARD_ES } from './scenarios.es.js';
+import { setGameLanguage } from './i18n.js';
 import { DEV_MODE } from './env.js';
 import { loadVision, saveVision } from './vision.js';
 import { loadSimulationCompleted, saveSimulationCompleted } from './progress.js';
@@ -142,6 +143,12 @@ export default function App() {
         ? SCENARIOS.slice(0, settings.cards)
         : SCENARIOS;
   const visionCard = spanish ? VISION_CARD_ES : VISION_CARD;
+
+  // i18next holds the interface language; the setup screen's pick becomes live
+  // once the run starts.
+  useEffect(() => {
+    setGameLanguage(spanish ? 'spanish' : 'english');
+  }, [spanish]);
   const scenario = deck[Math.min(index, deck.length - 1)];
   const questionNumber = index + 1;
 

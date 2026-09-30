@@ -1,4 +1,5 @@
 import { InfoScreen } from './InfoScreen.jsx';
+import { useT, useTDeep } from '../i18n.js';
 
 const GOALS_PARAGRAPHS = [
   'The simulation is based on a series of Environmental Justice in Technology principles that will be revealed to you once you complete all the scenarios. You may or may not agree with them, and so we ask you to keep a critical perspective on this matter as well.',
@@ -9,11 +10,13 @@ const GOALS_PARAGRAPHS = [
 // Simulation Mode only. Study Mode arrives having already played the
 // simulation, so it shows StudyPreviewScreen in this slot instead.
 export function GoalsScreen({ onBack, onNext }) {
+  const t = useT();
+  const T = useTDeep();
   return (
     <InfoScreen
-      label="S.02. YOUR GOAL"
-      heading={['YOUR', 'GOAL']}
-      paragraphs={GOALS_PARAGRAPHS}
+      label={t('S.02. YOUR GOAL')}
+      heading={T(['YOUR', 'GOAL'])}
+      paragraphs={T(GOALS_PARAGRAPHS)}
       onBack={onBack}
       onNext={onNext}
     />

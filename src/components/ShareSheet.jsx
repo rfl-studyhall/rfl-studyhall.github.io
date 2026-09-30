@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useT } from '../i18n.js';
 import { EndingArt } from './EndingArt.jsx';
 import { ENDING_ALIGN, ENDING_CAPTIONS } from '../endings.js';
 import {
@@ -15,6 +16,7 @@ import {
 // to send it. Nothing is sent until one of those is pressed -- the point is
 // that you see exactly what your friend will see first.
 export function ShareSheet({ ending, score, max, onClose, onShared }) {
+  const t = useT();
   const [copied, setCopied] = useState(false);
   const closeRef = useRef(null);
   const copyTimer = useRef(null);
@@ -70,16 +72,16 @@ export function ShareSheet({ ending, score, max, onClose, onShared }) {
         className="share-sheet"
         role="dialog"
         aria-modal="true"
-        aria-label="Share your result"
+        aria-label={t('Share your result')}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="share-sheet-head">
-          <h2>Share your result</h2>
+          <h2>{t('Share your result')}</h2>
           <button
             type="button"
             className="share-close"
             onClick={onClose}
-            aria-label="Close"
+            aria-label={t('Close')}
             ref={closeRef}
           >
             ✕
@@ -90,7 +92,7 @@ export function ShareSheet({ ending, score, max, onClose, onShared }) {
         <div className="share-preview">
           <div className="share-preview-title">
             <span className="share-preview-game">{GAME_NAME}</span>
-            <span className="share-preview-sub">{GAME_SUBTITLE}</span>
+            <span className="share-preview-sub">{t(GAME_SUBTITLE)}</span>
           </div>
           <div className="share-preview-art">
             <EndingArt ending={ending} />
@@ -101,7 +103,7 @@ export function ShareSheet({ ending, score, max, onClose, onShared }) {
           <div className="share-preview-dial" aria-hidden="true">
             {DIAL_BAR[ending]}
           </div>
-          <p className="share-preview-caption">{ENDING_CAPTIONS[ending]}</p>
+          <p className="share-preview-caption">{t(ENDING_CAPTIONS[ending])}</p>
           <p className="share-preview-link">{url}</p>
         </div>
 
@@ -111,14 +113,14 @@ export function ShareSheet({ ending, score, max, onClose, onShared }) {
 
         <div className="share-actions">
           <button type="button" className="btn" onClick={handleCopy}>
-            {copied ? 'Copied' : 'Copy'}
+            {copied ? t('Copied') : t('Copy')}
           </button>
           <button type="button" className="btn" onClick={handleEmail}>
-            Email
+            {t('Email')}
           </button>
           {canMessage && (
             <button type="button" className="btn" onClick={handleMessage}>
-              Message
+              {t('Message')}
             </button>
           )}
         </div>

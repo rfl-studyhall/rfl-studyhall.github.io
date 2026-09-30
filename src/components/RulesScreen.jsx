@@ -1,4 +1,5 @@
 import { InfoScreen } from './InfoScreen.jsx';
+import { useT, useTDeep } from '../i18n.js';
 
 // Four beats, four little windows -- each one is a separate thing the player
 // has to hold on to, so they get separate frames rather than a wall of copy.
@@ -30,11 +31,13 @@ const RULES_WINDOWS = [
 ];
 
 export function RulesScreen({ onBack, onNext }) {
+  const t = useT();
+  const T = useTDeep();
   return (
     <InfoScreen
-      label="S.01. HOW TO PLAY"
-      heading={['WELCOME TO', 'STUDY HALL!']}
-      paragraphs={RULES_WINDOWS}
+      label={t('S.01. HOW TO PLAY')}
+      heading={T(['WELCOME TO', 'STUDY HALL!'])}
+      paragraphs={T(RULES_WINDOWS)}
       onBack={onBack}
       onNext={onNext}
     />

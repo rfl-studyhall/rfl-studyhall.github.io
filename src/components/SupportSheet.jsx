@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { useT } from '../i18n.js';
 
 // Who to write to about supporting the game. There is nothing to buy and no
 // form to fill in -- the ask is a conversation, so the modal is one line and an
@@ -10,6 +11,7 @@ import { useEffect, useRef } from 'react';
 export const SUPPORT_EMAIL = 'felipe@rootedfutureslab.io';
 
 export function SupportSheet({ onClose }) {
+  const t = useT();
   const closeRef = useRef(null);
 
   useEffect(() => {
@@ -27,16 +29,16 @@ export function SupportSheet({ onClose }) {
         className="share-sheet share-sheet--support"
         role="dialog"
         aria-modal="true"
-        aria-label="Support Study Hall"
+        aria-label={t('Support Study Hall')}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="share-sheet-head">
-          <h2>Support Study Hall</h2>
+          <h2>{t('Support Study Hall')}</h2>
           <button
             type="button"
             className="share-close"
             onClick={onClose}
-            aria-label="Close"
+            aria-label={t('Close')}
             ref={closeRef}
           >
             ✕
@@ -44,7 +46,7 @@ export function SupportSheet({ onClose }) {
         </div>
 
         <p className="support-copy">
-          If you would like to support Study Hall financially or otherwise, please reach out to{' '}
+          {t('If you would like to support Study Hall financially or otherwise, please reach out to')}{' '}
           <a className="support-email" href={`mailto:${SUPPORT_EMAIL}`}>
             {SUPPORT_EMAIL}
           </a>

@@ -1,10 +1,11 @@
 import { SCENARIOS, VISION_CARD } from './scenarios.js';
+import { DEBRIEF_ES, VISION_ADVISORS_ES } from './scenarios.es.debrief.js';
 
-// Spanish text for the cards, copied as written from spanish_version_cards.pdf.
-// Only what is printed on a card is translated here -- title, story and the
-// five options. Everything that scores or debriefs a card (alignment, points,
-// principle, explanation) and the advisors' calls are not on the printed cards,
-// so they are taken from the English deck unchanged and stay in English.
+// Spanish text for the cards, copied as written from spanish_version_cards.pdf:
+// title, story and the five options. What a card says after it is answered --
+// the principle, the "why" for each option and the advisors' calls -- is not on
+// the printed cards; it comes from scenarios.es.debrief.js. Alignment and
+// points are not text and are taken from the English deck unchanged.
 const ES = [
   {
     titleLines: ['Día 1 en', 'Techflow'],
@@ -259,12 +260,19 @@ export const SCENARIOS_ES = SCENARIOS.map((scenario, i) => ({
   ...scenario,
   titleLines: ES[i].titleLines,
   paragraphs: ES[i].paragraphs,
-  options: scenario.options.map((option, j) => ({ ...option, text: ES[i].options[j] })),
+  principle: DEBRIEF_ES[i].principle,
+  advisors: scenario.advisors.map((advisor, j) => ({ ...advisor, quote: DEBRIEF_ES[i].advisors[j] })),
+  options: scenario.options.map((option, j) => ({
+    ...option,
+    text: ES[i].options[j],
+    explanation: DEBRIEF_ES[i].explanations[j],
+  })),
 }));
 
 export const VISION_CARD_ES = {
   ...VISION_CARD,
   titleLines: ['LA', 'VISIÓN'],
+  advisors: VISION_CARD.advisors.map((advisor, j) => ({ ...advisor, quote: VISION_ADVISORS_ES[j] })),
   paragraphs: [
     'Han pasado 20 años desde que entraste por primera vez a TechFlow.',
     'Ahora, te presentas ante la asamblea más grande de cooperativas tecnológicas del mundo, representando a 10,000 comunidades globales que quieren unirse a la comunidad cooperativa de TechFlow, que ya cuenta con 8,000 comunidades en todo el mundo. Creen que TechFlow es un ejemplo de cómo la tecnología puede tomar una postura firme y radical para ayudar a las comunidades y al planeta.',

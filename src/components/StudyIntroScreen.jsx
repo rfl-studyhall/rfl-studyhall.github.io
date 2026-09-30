@@ -1,4 +1,5 @@
 import { InfoScreen } from './InfoScreen.jsx';
+import { useT, useTDeep } from '../i18n.js';
 
 // Study Mode opens here. Players arrive having already played the simulation,
 // so it skips the how-to-play rules entirely and sets out what the untimed
@@ -26,11 +27,13 @@ const STUDY_INTRO_WINDOWS = [
 ];
 
 export function StudyIntroScreen({ onBack, onNext }) {
+  const t = useT();
+  const T = useTDeep();
   return (
     <InfoScreen
-      label="S.01. WELCOME TO STUDY MODE"
-      heading={['WELCOME TO', 'STUDY MODE']}
-      paragraphs={STUDY_INTRO_WINDOWS}
+      label={t('S.01. WELCOME TO STUDY MODE')}
+      heading={T(['WELCOME TO', 'STUDY MODE'])}
+      paragraphs={T(STUDY_INTRO_WINDOWS)}
       onBack={onBack}
       onNext={onNext}
     />

@@ -1,4 +1,5 @@
 import { InfoScreen } from './InfoScreen.jsx';
+import { useT, useTDeep } from '../i18n.js';
 import {
   PhoneIcon,
   PixelClock,
@@ -57,11 +58,13 @@ const STUDY_CONSENT_PARAGRAPHS = [
 // centred the overflow pushed the heading up out of view. Scrolling the cells
 // keeps the heading put.
 export function ConsentScreen({ study = false, onBack, onNext }) {
+  const t = useT();
+  const T = useTDeep();
   return (
     <InfoScreen
-      label="S.03. CONSENT & TRANSPARENCY"
-      heading={['CONSENT &', 'TRANSPARENCY']}
-      paragraphs={study ? STUDY_CONSENT_PARAGRAPHS : CONSENT_PARAGRAPHS}
+      label={t('S.03. CONSENT & TRANSPARENCY')}
+      heading={T(['CONSENT &', 'TRANSPARENCY'])}
+      paragraphs={T(study ? STUDY_CONSENT_PARAGRAPHS : CONSENT_PARAGRAPHS)}
       scrollBody
       onBack={onBack}
       onNext={onNext}

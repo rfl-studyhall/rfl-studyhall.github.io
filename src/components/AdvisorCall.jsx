@@ -1,4 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useT } from '../i18n.js';
 import { playRingTone, RING_TOTAL_MS } from '../ringtone.js';
 import { SHOW_ADVISOR_ROLE, ADVISOR_PROFILES } from '../scenarios.js';
 import { PhoneIcon } from '../pixels.jsx';
@@ -27,6 +28,7 @@ export function AdvisorCall({
   unlimited = false,
   showRole = true,
 }) {
+  const t = useT();
   const [phase, setPhase] = useState('idle'); // idle | ringing | talking
   const [active, setActive] = useState(null);
   const timerRef = useRef(null);
@@ -122,7 +124,7 @@ export function AdvisorCall({
     <div className="call-advisor-group" ref={groupRef}>
       {spentCalls.map((used, i) => (
         <div className="call-advisor-wrap" key={i}>
-          <span className="call-advisor-tooltip">{used ? 'Call Used' : 'Call Advisor'}</span>
+          <span className="call-advisor-tooltip">{used ? t('Call Used') : t('Call Advisor')}</span>
           <button
             type="button"
             ref={(el) => {
@@ -133,7 +135,7 @@ export function AdvisorCall({
               (phase === 'ringing' && active === i ? ' ringing' : '') +
               (used ? ' used' : '')
             }
-            aria-label={used ? 'Advisor call used' : 'Call advisor'}
+            aria-label={used ? t('Advisor call used') : t('Call advisor')}
             onClick={() => ring(i)}
           >
             <PhoneIcon />
@@ -152,15 +154,15 @@ export function AdvisorCall({
         >
           {SHOW_ADVISOR_ROLE && showRole && advisor.role && (
             <div className="advisor-role" data-tone={ADVISOR_PROFILES[advisor.role]?.tone}>
-              <span className="advisor-role-name">{advisor.role}</span>
+              <span className="advisor-role-name">{t(advisor.role)}</span>
               {ADVISOR_PROFILES[advisor.role] && (
-                <span className="advisor-motto">{ADVISOR_PROFILES[advisor.role].motto}</span>
+                <span className="advisor-motto">{t(ADVISOR_PROFILES[advisor.role].motto)}</span>
               )}
             </div>
           )}
           <p>{advisor.quote}</p>
           <button type="button" className="dismiss-btn" onClick={dismiss}>
-            Dismiss
+            {t('Dismiss')}
           </button>
         </div>
       )}
