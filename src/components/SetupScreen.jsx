@@ -106,8 +106,8 @@ export function SetupScreen({ onStart, initial, dev = false, studyUnlocked = fal
   // Sound defaults to on, so it never blocks Start Game
   const [sound, setSound] = useState(initial?.sound ?? true);
 
-  // The Spanish preview (Dev Mode only) plays the whole deck, so it offers 20
-  // where the English dev deck offers its four.
+  // Spanish plays the whole deck, so in Dev Mode it offers 20 where the
+  // English dev deck offers its four.
   const cardChoices = dev ? [language === 'spanish' ? 20 : DEV_DECK.length] : [10, 20];
   const ready = language !== null && mode !== null && cards !== null;
   const t = STRINGS[language] ?? STRINGS.english;
@@ -134,14 +134,9 @@ export function SetupScreen({ onStart, initial, dev = false, studyUnlocked = fal
                   {t.english}
                 </SetupBtn>
                 <div className="setup-lang-col">
-                  {/* The translation is only wired through the game in Dev
-                      Mode so far, so elsewhere the choice is shown and held
-                      rather than hidden. */}
                   <SetupBtn
                     selected={language === 'spanish'}
                     onClick={() => pickLanguage('spanish')}
-                    disabled={!dev}
-                    note={dev ? null : t.comingSoon}
                   >
                     {t.spanish}
                   </SetupBtn>

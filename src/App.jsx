@@ -132,9 +132,9 @@ export default function App() {
   // Dev Mode always plays its own four-card deck, whatever the setup screen
   // says; otherwise the card count picked there decides.
   //
-  // The Spanish deck is a dev-only preview for now and plays all nineteen
-  // cards plus the vision card, in Spanish, whatever the dev deck would be.
-  const spanish = DEV_MODE && settings?.language === 'spanish';
+  // The Spanish deck plays all nineteen cards plus the vision card, in
+  // Spanish, whatever the dev deck would be.
+  const spanish = settings?.language === 'spanish';
   const deck = spanish
     ? SCENARIOS_ES
     : DEV_MODE

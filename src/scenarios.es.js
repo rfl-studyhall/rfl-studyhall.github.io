@@ -94,7 +94,7 @@ const ES = [
       'Aprobar el centro de datos, pero asegurando que utilice 100% de energía renovable y los sistemas de refrigeración más eficientes.',
       'Construir la instalación, pero compensar todos los impactos ambientales a través de programas verificados de créditos de carbono.',
       'Cuestionar los supuestos, datos y proyecciones de un proyecto tan grande y el impacto que puede tener en las comunidades a lo largo del tiempo, mientras se proporcionan alternativas, como redes de servidores distribuidos y de propiedad comunitaria.',
-      'Cuestionar los supuestos, datos y proyecciones de un proyecto tan grande y el impacto que puede tener en las comunidades a lo largo del tiempo, mientras se proporcionan alternativas, como redes de servidores distribuidos y de propiedad comunitaria.',
+      'Aprobar una instalación subterránea para minimizar el impacto visual y la perturbación superficial del medio ambiente, asegurándose de que se construya en un lugar con abundancia de agua y energía.',
       'Construir utilizando los más altos estándares de certificación ambiental y prácticas de construcción ecológica disponibles.',
     ]
   },
@@ -173,7 +173,7 @@ const ES = [
       'Utilizar estudios de mercado para identificar las regiones con mayor demanda y concentrar allí primero los esfuerzos.',
       'Realizar investigación independiente y trabajar con socios locales potenciales para saber si, dónde y cuándo la tecnología es apropiada y beneficiosa para las comunidades locales antes de decidir expandirse.',
       'Enfocar el despliegue en lugares donde la tecnología pueda tener el mayor impacto positivo en la mayor cantidad de personas.',
-      'Enfocar el despliegue en lugares donde la tecnología pueda tener el mayor impacto positivo en la mayor cantidad de personas.',
+      'Priorizar áreas donde ya existan infraestructura y recursos que puedan apoyar mejor el despliegue de la tecnología, lo cual beneficiará a las comunidades locales.',
     ]
   },
   {
