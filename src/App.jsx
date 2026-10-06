@@ -129,19 +129,15 @@ export default function App() {
     };
   }, [bandsOpen]);
 
-  // Dev Mode always plays its own four-card deck, whatever the setup screen
-  // says; otherwise the card count picked there decides.
-  //
-  // The Spanish deck plays all nineteen cards plus the vision card, in
-  // Spanish, whatever the dev deck would be.
+  // Dev Mode always plays its own four-card deck, in whichever language was
+  // picked; otherwise the card count picked on the setup screen decides.
   const spanish = settings?.language === 'spanish';
-  const deck = spanish
-    ? SCENARIOS_ES
-    : DEV_MODE
-      ? DEV_DECK
-      : settings
-        ? SCENARIOS.slice(0, settings.cards)
-        : SCENARIOS;
+  const cards = spanish ? SCENARIOS_ES : SCENARIOS;
+  const deck = DEV_MODE
+    ? DEV_DECK.map((card) => cards[SCENARIOS.indexOf(card)])
+    : settings
+      ? cards.slice(0, settings.cards)
+      : cards;
   const visionCard = spanish ? VISION_CARD_ES : VISION_CARD;
 
   // i18next holds the interface language; the setup screen's pick becomes live

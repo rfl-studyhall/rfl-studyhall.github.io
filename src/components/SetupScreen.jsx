@@ -106,17 +106,12 @@ export function SetupScreen({ onStart, initial, dev = false, studyUnlocked = fal
   // Sound defaults to on, so it never blocks Start Game
   const [sound, setSound] = useState(initial?.sound ?? true);
 
-  // Spanish plays the whole deck, so in Dev Mode it offers 20 where the
-  // English dev deck offers its four.
-  const cardChoices = dev ? [language === 'spanish' ? 20 : DEV_DECK.length] : [10, 20];
+  const cardChoices = dev ? [DEV_DECK.length] : [10, 20];
   const ready = language !== null && mode !== null && cards !== null;
   const t = STRINGS[language] ?? STRINGS.english;
 
-  // Dev Mode's card count depends on the language, so switching language
-  // re-picks the one count on offer rather than keeping a stale one.
   function pickLanguage(next) {
     setLanguage(next);
-    if (dev) setCards(next === 'spanish' ? 20 : DEV_DECK.length);
   }
 
   return (
