@@ -13,6 +13,7 @@ export const LETTERS = ['A', 'B', 'C', 'D', 'E'];
 // them. The capitals are load-bearing -- macOS ignores filename case but the
 // Pages host does not, so this has to match the file exactly.
 export const CARDS_DOWNLOAD_URL = './Study_Hall_Cards.zip';
+export const CARDS_DOWNLOAD_URL_ES = './Study_Hall_Cards_ES.zip';
 
 export const FACILITATOR_FORM_URL =
   'https://docs.google.com/forms/d/e/1FAIpQLSct92R0RfomYZMXI32iA9jYQCbD-zJQLvWk_vL1rLkAg5bXEw/viewform?usp=header';

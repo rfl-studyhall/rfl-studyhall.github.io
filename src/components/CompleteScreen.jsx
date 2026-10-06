@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useT } from '../i18n.js';
+import { useIsSpanish, useT } from '../i18n.js';
 import {
   captureResultsShared,
   captureSharePreviewOpened,
@@ -21,7 +21,7 @@ import { EndingArt } from './EndingArt.jsx';
 import { ENDING_ALIGN, ENDING_CAPTIONS, endingFor } from '../endings.js';
 import { ShareSheet } from './ShareSheet.jsx';
 import { SupportSheet } from './SupportSheet.jsx';
-import { ALIGN_LABELS, CARDS_DOWNLOAD_URL, FACILITATOR_FORM_URL } from '../scenarios.js';
+import { ALIGN_LABELS, CARDS_DOWNLOAD_URL, CARDS_DOWNLOAD_URL_ES, FACILITATOR_FORM_URL } from '../scenarios.js';
 
 export function CompleteScreen({
   gaugeAngle,
@@ -37,6 +37,7 @@ export function CompleteScreen({
   // Which of the four endings the needle earned. One derivation, shared with
   // the share preview so the two can never disagree.
   const t = useT();
+  const isSpanish = useIsSpanish();
   const ending = endingFor(gaugeAngle);
   const band = { align: ENDING_ALIGN[ending], label: t(ALIGN_LABELS[ENDING_ALIGN[ending]]) };
   // Real play only ever sums integers; the debug band jump parks the needle on
@@ -65,7 +66,7 @@ export function CompleteScreen({
               {/* `download` rather than a plain link, so the file is saved
                   rather than handed to whatever the browser does with the type
                   -- the point of the card is to come away with the deck. */}
-              <a className="study-offer" href={CARDS_DOWNLOAD_URL} download>
+              <a className="study-offer" href={isSpanish ? CARDS_DOWNLOAD_URL_ES : CARDS_DOWNLOAD_URL} download>
                 <PixelCardsGuide className="study-offer-art" />
                 <span className="study-offer-label">{t('Cards & Guide')}</span>
               </a>
