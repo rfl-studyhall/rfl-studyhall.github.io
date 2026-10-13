@@ -2777,6 +2777,10 @@
     text-align: center;
   }
 
+  .setup-contact {
+    margin-top: 4px;
+  }
+
   .setup-license a {
     color: var(--green);
     text-decoration: underline;

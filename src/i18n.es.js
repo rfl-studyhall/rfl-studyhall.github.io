@@ -9,6 +9,8 @@ import { ADVISOR_PROFILES } from './scenarios.js';
 // EJIT is left as the project's own acronym rather than expanded, matching how
 // the English screens use it.
 export const ES_UI = {
+  pick: 'elección',
+  picks: 'elecciones',
   // --- shared ---------------------------------------------------------------
   Back: 'Atrás',
   Next: 'Siguiente',
@@ -32,13 +34,13 @@ export const ES_UI = {
     'En esta simulación, te enfrentarás a una serie de escenarios que pondrán a prueba tu comprensión actual de los impactos de la tecnología en nuestra sociedad y nuestro medio ambiente.',
   'The journey': 'El viaje',
   'We will take you on a journey that starts with you as an intern in a tech startup and ends 20 years later with you in positions of power. And as time passes and you gain more power, the scenarios will become more complicated.':
-    'Te llevaremos en un viaje que comienza contigo como pasante en una startup tecnológica y termina 20 años después contigo en posiciones de poder. Y a medida que pase el tiempo y ganes más poder, los escenarios se volverán más complicados.',
+    'Te llevaremos en un viaje que comienza contigo siendo pasante en una startup tecnológica, y termina 20 años después, tras los cuales te encuentras en una posición de poder. A medida que pase el tiempo y subas de puesto, los escenarios se volverán cada vez más complicados.',
   'The clock': 'El reloj',
   'In this world everything moves fast, leaving many things broken. Here, you will also be faced with this time pressure and you will have 1.5min to choose an answer.':
     'En este mundo todo se mueve rápido, dejando muchas cosas rotas. Aquí también enfrentarás esta presión de tiempo y tendrás 1.5 min para elegir una respuesta.',
   'Your advisors': 'Tus asesores',
   'Finally, if you are in doubt you can call one of your advisors. But keep in mind that everyone has a unique bias. So, stay critical.':
-    'Por último, si tienes dudas puedes llamar a uno de tus asesores. Pero ten en cuenta que cada uno tiene un sesgo único. Así que mantén una mirada crítica.',
+    'Finalmente, si tienes dudas puedes llamar a uno de los asesores. Sin embargo, debes tomar en cuenta que cada uno cuenta con algún sesgo, por lo que debes mantener una perspectiva crítica.',
 
   // --- goals ----------------------------------------------------------------
   'S.02. YOUR GOAL': 'S.02. TU META',

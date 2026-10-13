@@ -261,7 +261,7 @@ function WordCloud({ words, scope }) {
         >
           <span className="cloud-tip-word">{hover.text}</span>
           <span className="cloud-tip-count">
-            {hover.count} {hover.count === 1 ? 'pick' : 'picks'}
+            {hover.count} {t(hover.count === 1 ? 'pick' : 'picks')}
           </span>
         </div>
       )}

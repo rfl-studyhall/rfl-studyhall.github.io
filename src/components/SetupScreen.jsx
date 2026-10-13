@@ -227,6 +227,11 @@ export function SetupScreen({ onStart, initial, dev = false, studyUnlocked = fal
                 />
               ))}
             </p>
+            <p className="setup-license setup-contact">
+              <a href="mailto:info@rootedfutureslab.io">
+                info@rootedfutureslab.io
+              </a>
+            </p>
           </div>
         </div>
       </div>
