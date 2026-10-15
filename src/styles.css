@@ -3069,6 +3069,17 @@
     flex: none;
   }
 
+  /* Top-aligned info screens (Welcome): copy starts under the title bar
+     rather than floating in the middle of the card. */
+  .setup-card--top .setup-body {
+    justify-content: flex-start;
+  }
+
+  /* ...and the card is only as tall as that copy, not the shared 759px. */
+  .setup-card--info.setup-card--top {
+    height: auto;
+  }
+
   .rules-text--scroll {
     flex: 1 1 auto;
     /* Without this a flex item refuses to shrink below its content, and

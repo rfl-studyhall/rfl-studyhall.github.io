@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { TitleBar } from './TitleBar.jsx';
 import { NavFooter } from './NavFooter.jsx';
 import { useDecodeLines } from '../useDecodeLines.js';
+import { useFitToViewport } from '../useFitToViewport.js';
 
 const REDUCED_MOTION = '(prefers-reduced-motion: reduce)';
 
@@ -13,9 +14,14 @@ const REDUCED_MOTION = '(prefers-reduced-motion: reduce)';
 //   { icon, text }      a bordered cell with a pixel icon beside the copy
 //   { window, lines }   a little pop-up window with its own chrome bar
 //
+// `top` pins the copy to the top of the card instead of centring it. `fit`
+// zooms the card down to the viewport rather than letting the page scroll.
+//
 // The copy decodes in on mount -- see useDecodeLines. Back/Next stay live
 // throughout, and any click or keypress snaps the text to its final state.
-export function InfoScreen({ label, heading, paragraphs, art, scrollBody = false, onBack, onNext }) {
+export function InfoScreen({ label, heading, paragraphs, art, scrollBody = false, top = false, fit = false, onBack, onNext }) {
+  const cardRef = useRef(null);
+  useFitToViewport(fit ? cardRef : { current: null });
   const [animate] = useState(() => !window.matchMedia?.(REDUCED_MOTION).matches);
 
   // The decoder animates one flat list of strings, so the blocks are
@@ -118,7 +124,7 @@ export function InfoScreen({ label, heading, paragraphs, art, scrollBody = false
 
   return (
     <div className="setup-screen">
-      <div className="setup-card setup-card--info">
+      <div ref={cardRef} className={'setup-card setup-card--info' + (top ? ' setup-card--top' : '')}>
         <TitleBar label={label} />
         <div className="setup-body">
           <div className={'setup-inner' + (scrollBody ? ' setup-inner--scroll' : '')}>
@@ -149,7 +155,7 @@ export function InfoScreen({ label, heading, paragraphs, art, scrollBody = false
             {art}
           </div>
         </div>
-        <NavFooter onBack={onBack} onNext={onNext} />
+        {(onBack || onNext) && <NavFooter onBack={onBack} onNext={onNext} />}
       </div>
     </div>
   );

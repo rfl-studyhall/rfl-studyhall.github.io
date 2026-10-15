@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import { useFitToViewport } from '../useFitToViewport.js';
 import { DEV_DECK } from '../scenarios.js';
 
 // The four Creative Commons badges, in the order the licence names them.
@@ -43,7 +44,7 @@ function SetupBtn({ selected, onClick, children, disabled = false, note = null, 
 const STRINGS = {
   english: {
     titleBar: 'Version 0.1 - Study Hall',
-    welcome: ['WELCOME TO', 'STUDY HALL'],
+    welcome: ['GAME', 'SETUP'],
     languageLabel: 'CHOOSE YOUR LANGUAGE',
     english: 'English',
     spanish: 'Español',
@@ -63,7 +64,7 @@ const STRINGS = {
   },
   spanish: {
     titleBar: 'Version 0.1 - Study Hall',
-    welcome: ['BIENVENIDO A', 'STUDY HALL'],
+    welcome: ['CONFIGURACIÓN', 'DEL JUEGO'],
     languageLabel: 'ELIGE TU IDIOMA',
     // Each language button names itself in its own language, so "English"
     // stays "English" here rather than becoming "Inglés".
@@ -100,6 +101,8 @@ export function SetupScreen({ onStart, initial, dev = false, studyUnlocked = fal
   // own short deck instead.
   const lockedCards = dev ? [] : [10];
   const studyLocked = !dev && !studyUnlocked;
+  const cardRef = useRef(null);
+  useFitToViewport(cardRef);
   const [language, setLanguage] = useState(initial?.language ?? null);
   const [mode, setMode] = useState(initial?.mode ?? null);
   const [cards, setCards] = useState(initial?.cards ?? (dev ? DEV_DECK.length : null));
@@ -116,7 +119,7 @@ export function SetupScreen({ onStart, initial, dev = false, studyUnlocked = fal
 
   return (
     <div className="setup-screen">
-      <div className="setup-card">
+      <div className="setup-card" ref={cardRef}>
         <TitleBar label={dev ? `${t.titleBar} [DEV]` : t.titleBar} />
         <div className="setup-body">
           <div className="setup-inner">

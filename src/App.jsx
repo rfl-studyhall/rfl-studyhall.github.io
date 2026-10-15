@@ -28,6 +28,7 @@ import { DEV_MODE } from './env.js';
 import { loadVision, saveVision } from './vision.js';
 import { loadSimulationCompleted, saveSimulationCompleted } from './progress.js';
 import { useIsPhone } from './useIsPhone.js';
+import { CreditsScreen } from './components/CreditsScreen.jsx';
 import { SetupScreen } from './components/SetupScreen.jsx';
 import { RulesScreen } from './components/RulesScreen.jsx';
 import { GoalsScreen } from './components/GoalsScreen.jsx';
@@ -73,8 +74,8 @@ function scoreToAngle(score, scoreMin, scoreMax) {
 }
 
 export default function App() {
-  // setup | rules | goals | studyPreview | consent | reflect | transition | prompt | options | complete
-  const [phase, setPhase] = useState('setup');
+  // credits | setup | rules | goals | studyPreview | consent | reflect | transition | prompt | options | complete
+  const [phase, setPhase] = useState('credits');
   // The words the player picks for their own definition of Environmental
   // Justice in Technology. Kept here so they survive a trip back to the rules.
   const [reflectionWords, setReflectionWords] = useState([]);
@@ -399,7 +400,9 @@ export default function App() {
   const phoneSim = isPhone && !isStudy;
 
   let screen;
-  if (phase === 'setup') {
+  if (phase === 'credits') {
+    screen = <CreditsScreen onNext={() => setPhase('setup')} />;
+  } else if (phase === 'setup') {
     screen = (
       <SetupScreen
         onStart={handleStart}
