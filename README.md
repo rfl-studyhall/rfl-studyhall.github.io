@@ -10,8 +10,9 @@ It is a static site: React + Vite, no server of its own. The shipped game is a
 single self-contained `index.html`, so it can be hosted anywhere that serves
 files (GitHub Pages, Netlify, an S3 bucket, a USB stick).
 
-This guide is for people who want to **fork it, change how it looks and what it
-says, and run it as their own**.
+This guide is for people who want to **fork it, give it their own look and feel,
+and run it as their own version**. Analytics keep flowing to the project's
+shared PostHog, so every version of the game contributes to the same research.
 
 ---
 
@@ -38,7 +39,7 @@ Then open **http://localhost:5601/dev.html**.
 Dev Mode (`VITE_DEV_MODE=true`) shows **Restart** and **Go to results screen**
 buttons, plays a short four-card deck instead of the full one, and switches
 analytics off, so you can click through the whole game over and over without
-polluting anything.
+adding test runs to the real data.
 
 You can also flip it per visit on any build with `?dev=1` (on) or `?dev=0`
 (off) at the end of the address.
@@ -47,17 +48,32 @@ You can also flip it per visit on any build with `?dev=1` (on) or `?dev=0`
 
 ## 2. Make it yours: first things to change
 
-Do these before anything else, so your fork does not point at ours.
+Leave the analytics wiring alone: forks keep reporting anonymous play data to
+the project's PostHog, so every version of the game feeds the same research
+(see [Analytics](#analytics-stay-on)). Everything below is safe to change.
 
 | What | Where | Why |
 | --- | --- | --- |
-| **Analytics key** | `.env` → `VITE_POSTHOG_KEY`, `VITE_POSTHOG_HOST` | `.env` ships with *our* PostHog project. Leave it and your players' runs land in our analytics. Put your own project's key in, or **blank both values** to switch analytics off. |
 | **Contact + support email** | `src/components/SetupScreen.jsx` (`info@…` footer), `src/components/SupportSheet.jsx` (`SUPPORT_EMAIL`) | Replies from your players should reach you. |
 | **Facilitator sign-up form** | `src/scenarios.js` → `FACILITATOR_FORM_URL` | Points at our Google Form. |
 | **Credits** | `src/components/CreditsScreen.jsx` | The "A special thanks" first screen. Replace the name lists with your own people. |
 | **Printable cards** | `Study_Hall_Cards.zip`, `Study_Hall_Cards_ES.zip` (repo root) | Linked from the results screen (`CARDS_DOWNLOAD_URL` in `src/scenarios.js`). Swap in your own deck, keeping the same file names, or change the constants. The capitals matter: some hosts are case-sensitive. |
 | **Name and tagline** | `src/share.js` (`GAME_NAME`, `GAME_SUBTITLE`), `src/components/PromptScreen.jsx` ("STUDY HALL BY …"), `<title>` in `dev.html` | Used in share text and the page title. |
 | **License notice** | footer of `src/components/SetupScreen.jsx` | See [License](#license-and-attribution). |
+
+### Analytics stay on
+
+Production builds send anonymous gameplay events (country, answers, timing,
+feature use) to the project's PostHog, configured in `.env`
+(`VITE_POSTHOG_KEY`, `VITE_POSTHOG_HOST`). The game's consent screen tells
+players exactly what is collected. Please:
+
+- **Keep `.env` as it is**, so your fork's play data reaches the shared project.
+- **Keep the consent screen accurate.** If you add or remove anything that is
+  tracked (`src/telemetry.js`), update `src/components/ConsentScreen.jsx` to
+  match.
+- **Don't test against production.** Dev Mode (`npm run dev`, `?dev=1`, or
+  `npm run bundle:dev`) never sends events, so click through as much as you like.
 
 ---
 
@@ -240,7 +256,7 @@ optional.
   `modal deploy modal_app/word_cloud.py`, then put the URL it prints in
   `.env` as `VITE_WORD_CLOUD_URL`.
 
-Keep your PostHog *personal API key* inside the Modal app only. `.env` ships
+Keep the PostHog *personal API key* inside the Modal app only. `.env` ships
 inside the public bundle, so nothing secret belongs in it.
 
 ---
