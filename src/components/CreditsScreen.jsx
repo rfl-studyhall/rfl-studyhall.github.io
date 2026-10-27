@@ -1,51 +1,104 @@
-import { InfoScreen } from './InfoScreen.jsx';
+import { useRef } from 'react';
+import { useFitToViewport } from '../useFitToViewport.js';
+import { TitleBar } from './TitleBar.jsx';
 
-// Everyone thanked on the first screen.
-// TODO: the sender's cc line was cut off in the screenshot -- add the rest when
-// known.
-const CREDIT_NAMES = [
-  'Ariadne Astrild Flores Rubio',
-  'Alexa Angelica Corral Montero',
-  'Valeria González Cepeda',
-  'Evelyn Khare',
-  'Lilikoi Majewski',
-  'Suhey Romo Ferracin',
-  'Bailey Williams',
-  'Stephen S Fong',
-  'Eloísa del Carmen García Canseco',
+const DASHBOARD_URL = 'https://datacenterimpactdashboard.com/?introTutorial=skip&country=mex';
+
+const LEADS = [
+  ['Program Lead and concept development', 'Felipe Almeida, Ph.D.'],
+  ['Design lead and development', 'Parul Sharma'],
+  ['Original cards designed by', 'Carmela Wilkins and Sylvie Bartusek'],
 ];
 
-// Translators of the Spanish version, spelled as on the setup screen's credit.
-const TRANSLATOR_NAMES = ['Mariana González-Cepeda', 'Jose Alberto Nevarez'];
+// Study Hall facilitators, grouped by university.
+const FACILITATORS = [
+  {
+    school: 'Universidad Autónoma de Baja California, Mexico',
+    names: [
+      'Alexa Angelica Corral Montero',
+      'Ariadne Astrild Flores Rubio',
+      'Jose Alberto Loaiza Nevarez',
+      'Mariana Gonzáles Cepeda',
+      'Suhey Romo Ferracin',
+      'Valeria Gonzáles Cepeda',
+    ],
+  },
+  {
+    school: 'Virginia Commonwealth University - United States',
+    names: ['Bailey Williams', 'Benjamin Uttenweiler', 'Evelyn Khare', 'Lilikoi Majewski'],
+  },
+];
 
-// Names run together in a sentence rather than one per line.
-const join = (names) => names.join(', ');
+const DASHBOARD = (
+  <a href={DASHBOARD_URL} target="_blank" rel="noopener noreferrer">
+    Data Centers and Environmental Justice
+  </a>
+);
 
-// The first screen, ahead of the language and mode choice, so it is English
-// only. "A special thanks" sits in the body's own type rather than the pixel
-// heading, and the way on is a single Start Game-style button instead of the
-// Back / Next footer.
+const TEAM = [
+  ['Sanjana Paul', 'Executive Director and Co-Founder'],
+  ['Anke de Boer', 'Chief Operating Officer'],
+  ['Charles Knoble, Ph.D.', 'Advisor, MYLE'],
+  ['Arpan Somani', 'Advisor, MYLE'],
+  ['Chris Cameron', <>Program Manager, {DASHBOARD}</>],
+  ['Peter Polack', <>Developer, {DASHBOARD}</>],
+];
+
+// Reached from the title menu, so it is English only. The way out is a single
+// Start Game-style button back to the menu rather than the Back / Next footer.
+// Laid out in columns and zoomed to the viewport, so the list never scrolls.
 export function CreditsScreen({ onNext }) {
+  const cardRef = useRef(null);
+  useFitToViewport(cardRef);
   return (
-    <InfoScreen
-      label="WELCOME"
-      top
-      fit
-      heading={['WELCOME TO', 'STUDY HALL']}
-      paragraphs={[
-        'A special thanks, for design co-creation, translations, and playtesting:',
-        `Students at VCU: ${join(CREDIT_NAMES)}`,
-        `Students at UABC (Mexico): ${join(TRANSLATOR_NAMES)}`,
-      ]}
-      art={
-        <button
-          type="button"
-          className="restart-btn restart-btn--big setup-start-btn"
-          onClick={onNext}
-        >
-          Get started
-        </button>
-      }
-    />
+    <div className="setup-screen">
+      <div className="setup-card setup-card--info setup-card--top credits-card" ref={cardRef}>
+        <TitleBar label="CREDITS" />
+        <div className="setup-body">
+          <div className="setup-inner credits-inner">
+            <h1 className="pixel">CREDITS</h1>
+
+            <div className="credits-leads">
+              {LEADS.map(([role, name]) => (
+                <p key={role}>
+                  {role}: <strong>{name}</strong>
+                </p>
+              ))}
+            </div>
+
+            <h2 className="credits-heading">Co-designed with Study Hall facilitators:</h2>
+            <div className="credits-cols">
+              {FACILITATORS.map(({ school, names }) => (
+                <section key={school}>
+                  <h3>{school}</h3>
+                  <ul>
+                    {names.map((n) => (
+                      <li key={n}>{n}</li>
+                    ))}
+                  </ul>
+                </section>
+              ))}
+            </div>
+
+            <h2 className="credits-heading">Rooted Futures Lab Team &amp; Other Programs</h2>
+            <ul className="credits-team">
+              {TEAM.map(([name, role]) => (
+                <li key={name}>
+                  <strong>{name}</strong> - {role}
+                </li>
+              ))}
+            </ul>
+
+            <button
+              type="button"
+              className="restart-btn restart-btn--big setup-start-btn"
+              onClick={onNext}
+            >
+              Back
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

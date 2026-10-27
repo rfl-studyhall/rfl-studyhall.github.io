@@ -6065,3 +6065,153 @@
       font-size: 13px;
     }
   }
+
+  /* Title screen: same card as setup. The title sits top-centre, the three
+     hamsters bottom-left, and the menu bottom-right as on a console title
+     screen. */
+  .menu-card .menu-body {
+    height: 595px;
+    box-sizing: border-box;
+    position: relative;
+    justify-content: flex-start;
+    align-items: stretch;
+  }
+
+  .menu-title {
+    margin: 24px 0 0;
+    font-size: 40px;
+    letter-spacing: 0.08em;
+  }
+
+  .menu-list {
+    position: absolute;
+    right: 48px;
+    bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  .menu-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 4px 0;
+    background: transparent;
+    border: 0;
+    color: var(--green);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .menu-arrow {
+    font-size: 12px;
+    visibility: hidden;
+  }
+
+  .menu-item.is-active .menu-arrow {
+    visibility: visible;
+  }
+
+  .menu-item:focus-visible {
+    outline: none;
+  }
+
+  .menu-hamsters {
+    position: absolute;
+    left: 40px;
+    bottom: 40px;
+    width: 300px;
+    height: auto;
+  }
+
+  /* Narrow screens have no room to put the hamsters and the menu side by side,
+     so they stack: title, menu, then the hamsters along the bottom. */
+  @media (max-width: 640px) {
+    .menu-card .menu-body {
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 16px;
+    }
+
+    .menu-title {
+      margin-top: 0;
+      font-size: 30px;
+    }
+
+    .menu-list {
+      position: static;
+      align-self: flex-end;
+      margin-right: 16px;
+    }
+
+    .menu-hamsters {
+      position: static;
+      width: 100%;
+      max-width: 300px;
+    }
+  }
+
+  /* Credits: leads, a two-column facilitator list, then the Rooted Futures
+     Lab team. Body type, like the other read-only screens. */
+  .credits-inner {
+    font-size: 12px;
+    line-height: 1.6;
+    color: #E8E8E8;
+  }
+
+  .credits-card .setup-body h1 {
+    margin-bottom: 20px;
+  }
+
+  .credits-inner p,
+  .credits-inner ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .credits-inner strong {
+    color: var(--green);
+    font-weight: 700;
+  }
+
+  .credits-inner a {
+    color: var(--green);
+  }
+
+  .credits-heading {
+    margin: 18px 0 8px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--green);
+  }
+
+  .credits-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .credits-cols h3 {
+    margin: 0 0 4px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .credits-card .setup-start-btn {
+    margin: 20px auto 0;
+  }
+
+  @media (max-width: 640px) {
+    .credits-cols {
+      grid-template-columns: 1fr;
+    }
+  }
